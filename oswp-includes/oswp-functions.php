@@ -2,7 +2,7 @@
 
 namespace OSWP_Functions;
 
-class OSWP_Functions{
+trait OSWP_Functions{
 
     public function __construct()
     {

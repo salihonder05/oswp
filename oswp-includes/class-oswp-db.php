@@ -10,9 +10,11 @@ define('DB_PASSWORD', '');
 use Exception;
 use PDO;
 use PDOException;
-use OSWP_Functions\OSWP_Functions;
+use Error\OSWP_Error;
 
-class OSWP_DB extends OSWP_Functions{
+class OSWP_DB{
+
+    use OSWP_Error;
 
     protected $connect;
 
@@ -20,7 +22,7 @@ class OSWP_DB extends OSWP_Functions{
     {
         if( $this->constantControl()->success === false )
         {
-            parent::_die( 'OSWP_DB Constant Not Defined !' );
+            $this->_die( 'OSWP_DB Constant Not Defined !' );
         }
 
         $this->connection();
@@ -43,22 +45,18 @@ class OSWP_DB extends OSWP_Functions{
                 "success"   => true,
                 "error"     => 'OSWP_DB - There is Defined(s)',
                 "code"      => "",
-                "class"     => __CLASS__,
             );
         }
-        else{
-            return (object) array(
-                "success"   => false,
-                "error"     => 'OSWP_DB constant Not Defined !',
-                "code"      => "err_oswpdb_constant",
-                "class"     => __CLASS__,
-            ); 
+        else
+        {
+            OSWP_Error::returnError( 'OSWP_DB Constant Not Defined(s)' ); 
         }
     } 
 
     public function connection()
     {
-        try{
+        try
+        {
             $this->connect = new PDO(
                 'mysql:host=' . HOST . ';dbname=' . DB_NAME . ';',
                 DB_USER,
@@ -73,6 +71,7 @@ class OSWP_DB extends OSWP_Functions{
         }
         catch (\PDOException $e){
             echo $e->getMessage();
+            OSWP_Error::returnError( $e->getMessage() ); 
         }
     }
 
@@ -82,23 +81,29 @@ class OSWP_DB extends OSWP_Functions{
         $q->execute();
         $t = $q->fetchAll();
 
+        $temp = 0;
+
         foreach( $t as $tt ){
 
             foreach( $tt as $r ){
 
                 if( $r == $table )
-                {
+                {   
+                    $temp++;
                     return (object) array(
                         'success'   => true,
                         'value'     => $r,
                         'message'   => 'Table Found !',
                     );
                 }
-                else
-                {
-                    continue;
-                }
             }
+        }
+
+        if($temp === $temp)
+        {
+            self::returnError(
+                '(OSWP_DB) Böyle bir isimde tablo bulunamadı! Eğer ki amacınız tablo kontrolü değil ise dikkate almayın!' 
+            );
         }
     }
 
@@ -112,10 +117,7 @@ class OSWP_DB extends OSWP_Functions{
 
         if(empty( $t ) or $t <= 0) 
         {
-            return (object) array(
-                'success'   => false,
-                'error'     => 'DB Not Table Inside',
-            );
+            OSWP_Error::returnError( '(OSWP_DB) Veritabanı içerisinde tablo bulunamıyor! ' ); 
         }
         else 
         {
@@ -143,7 +145,7 @@ class OSWP_DB extends OSWP_Functions{
         }
         else
         {
-            parent::_die( 'OSWP_DB Table Not Found' );
+            OSWP_Error::returnError( '(OSWP_DB) Tablo İsmi Yok!' ); 
         }
     }
 

@@ -4,7 +4,7 @@
  * Hold OSWP Version 
  * @global string $oswp_version 
  */
-$oswp_version = "1.0-beta-3";
+$oswp_version = "1.0-beta-4";
 
 /**
  * Hold PHP Version
@@ -14,7 +14,7 @@ $oswp_php_version = "7.4.26";
 
 /**
  * Hold MYSQL Version
- * @global string $oswp_php_version
+ * @global string $oswp_mysql_version
  */
 $oswp_mysql_version = "5.7.36";
 
