@@ -1,6 +1,13 @@
 # Primary Rule
   - Every File Update Change Version.
 
+# _return()
+ - Be Object 
+ - Usage : 
+    'success'   => true || false,
+    'value'     => $value,
+    'message'   => $message,
+
 # To Do 
 
 * DB Class

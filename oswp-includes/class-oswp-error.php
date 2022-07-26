@@ -2,11 +2,7 @@
 
 namespace Error;
 
-use OSWP_Functions\OSWP_Functions;
-
 trait OSWP_Error{
-
-    use OSWP_Functions;
 
     public function __construct()
     {

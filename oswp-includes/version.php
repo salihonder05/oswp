@@ -4,7 +4,7 @@
  * Hold OSWP Version 
  * @global string $oswp_version 
  */
-$oswp_version = "1.0-beta-4";
+$oswp_version = "1.0-beta-5";
 
 /**
  * Hold PHP Version

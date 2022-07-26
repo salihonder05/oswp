@@ -10,11 +10,11 @@ define('DB_PASSWORD', '');
 use Exception;
 use PDO;
 use PDOException;
-use Error\OSWP_Error;
+use OSWP_Functions\OSWP_Functions;
 
 class OSWP_DB{
 
-    use OSWP_Error;
+    use OSWP_Functions;
 
     protected $connect;
 
@@ -41,15 +41,13 @@ class OSWP_DB{
             defined( 'DB_USER' )  &&
             defined( 'DB_PASSWORD' )
         ){
-            return (object) array(
-                "success"   => true,
-                "error"     => 'OSWP_DB - There is Defined(s)',
-                "code"      => "",
-            );
+
+            return $this->_return( true , '' , 'OSWP_DB - There is Defined(s)' );
+        
         }
         else
         {
-            OSWP_Error::returnError( 'OSWP_DB Constant Not Defined(s)' ); 
+            self::returnError( 'OSWP_DB Constant Not Defined(s)' ); 
         }
     } 
 
@@ -71,7 +69,7 @@ class OSWP_DB{
         }
         catch (\PDOException $e){
             echo $e->getMessage();
-            OSWP_Error::returnError( $e->getMessage() ); 
+            self::returnError( $e->getMessage() ); 
         }
     }
 
@@ -90,11 +88,9 @@ class OSWP_DB{
                 if( $r == $table )
                 {   
                     $temp++;
-                    return (object) array(
-                        'success'   => true,
-                        'value'     => $r,
-                        'message'   => 'Table Found !',
-                    );
+
+                    return $this->_return( true , $r , 'Table Found!' );
+
                 }
             }
         }
@@ -117,7 +113,7 @@ class OSWP_DB{
 
         if(empty( $t ) or $t <= 0) 
         {
-            OSWP_Error::returnError( '(OSWP_DB) Veritabanı içerisinde tablo bulunamıyor! ' ); 
+            self::returnError( '(OSWP_DB) Veritabanı içerisinde tablo bulunamıyor! ' ); 
         }
         else 
         {
@@ -133,7 +129,8 @@ class OSWP_DB{
                 }
             }
         }
-        return $names;
+        
+        return $this->_return( true , $names , '' );
         
     }
 
@@ -141,11 +138,11 @@ class OSWP_DB{
     {
         if( $this->tableControl( $table )->success === true )
         {
-            return $this->tableControl( $table )->value;
+            return $this->_return( true , $this->tableControl( $table )->value , '' );
         }
         else
         {
-            OSWP_Error::returnError( '(OSWP_DB) Tablo İsmi Yok!' ); 
+            self::returnError( '(OSWP_DB) Tablo İsmi Yok!' ); 
         }
     }
 

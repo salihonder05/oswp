@@ -7,11 +7,17 @@
 
 
 /**
- * File Require
+ * Traits
  */
 
-require 'oswp-functions.php';
 require 'class-oswp-error.php';
+require 'oswp-functions.php';
+
+
+/**
+ * Classes
+ */
+
 require 'class-oswp-db.php';
 
 /**
