@@ -16,6 +16,13 @@ trait OSWP_Functions{
     {
     }
 
+    /**
+     * Global Function - return
+     * @param bool   $success  Check Proccess || Misson Control (!)
+     * @param mixed  $value    Return Value
+     * @param string $message  Return Message Or Note        
+     * @return object
+     */
     public function _return($success, $value, $message)
     {
         if( !is_bool( $success ) )
@@ -30,38 +37,57 @@ trait OSWP_Functions{
 
         return (object) array(
             'success'   => (bool) $success,
-            'value'     => $value ? $value : '-',
+            'value'     => $value ? $value : $value,
             'message'   => (string) $message ? $message : '-',
         );
     }
 
+    /**
+     * Global Function - var_dump()
+     * @param mixed $value  Will Display Value
+     * @return object
+     */
     public function _dump( $value )
     {
-        if( empty( $value ) ) 
+        if( empty( $value ) and !is_string( $value ) ) 
         {
-           return  $this->_return( false , '' , 'Empty Value' );
+           return  $this->_return( false , '' , 'Empty Value Or Not String' );
         }
         else {
-            return $this->_return( true , var_dump( $value ) , 'True _dump()' );
+            return $this->_return( true , var_dump( $value ) , 'True - '.__FUNCTION__.'' );
         }
         
     }
 
+    /**
+     * Global Function - _die()
+     * @param string $text  Will Display Text  
+     * @return object
+     */
     public function _die(string $text)
     {
-        if( empty( $text ) ) {
-            return $this->_return( false , '' , 'Empty Value' );
+        if( empty( $text ) and !is_string( $text )) {
+            return $this->_return( false , '' , 'Empty Value Or Not String' );
         }
         else{
-            return $this->_return( true , die( $text ) , 'True _die()' );
+            return $this->_return( true , die( $text ) , 'True - '.__FUNCTION__.'' );
         }
     }
 
+    /**
+     * Global Function - exit()
+     * @return object
+     */
     public function _exit()
     {
         return $this->_return( true , exit() , 'True _exit()' );
     }
 
+    /**
+     * With Enter Array Returning
+     * @param array $array  Echo Array
+     * @return object 
+     */
     public function echoArray(array $array)
     {
         if( is_array( $array ) && !empty( $array ) )
@@ -79,6 +105,10 @@ trait OSWP_Functions{
         }
     }
 
+    /**
+     * Check Value Type
+     * @param mixed $controlValue   Will Check Value
+     */
     public function typeControl( $controlValue )
     {
 
@@ -88,10 +118,8 @@ trait OSWP_Functions{
         }
         else
         {
-
             switch( $controlValue )
             {
-
                 case is_integer( $controlValue ) or is_int( $controlValue ):
                     return $this->_return(
                         true , (int) $controlValue , 'Value Is Integer - Int'
@@ -149,7 +177,6 @@ trait OSWP_Functions{
                 default:
                     return self::returnError( 'Switch Case Error - '.__FUNCTION__.'' );
             }
-
         }
     }
 

@@ -73,36 +73,58 @@ class OSWP_DB{
         }
     }
 
+    /**
+     * Table Name Control
+     * @param string $table  Enter Existing DB Table Name
+     * @return object
+     */
     public function tableControl(string $table)
     {
-        $q = $this->connect->prepare('SHOW TABLES');
-        $q->execute();
-        $t = $q->fetchAll();
+        if( is_string( $table ) )
+        {
+            $q = $this->connect->prepare('SHOW TABLES');
+            $q->execute();
+            $t = $q->fetchAll();
 
-        $temp = 0;
+            $temp = 0;
 
-        foreach( $t as $tt ){
+            foreach( $t as $tt ){
 
-            foreach( $tt as $r ){
+                foreach( $tt as $r ){
 
-                if( $r == $table )
-                {   
-                    $temp++;
+                    if( $r == $table )
+                    {   
+                        $temp++;
 
-                    return $this->_return( true , $r , 'Table Found!' );
+                        return $this->_return( true , $r , 'Table Found!' );
 
+                    }
                 }
             }
-        }
 
-        if($temp === $temp)
+            if($temp === $temp)
+            {
+                self::returnError(
+                    ' \' '.$table.' \' Table Not Found' 
+                );
+
+                return $this->_return(
+                    false , '' , '\' '.$table.' \' Table Not Found!'
+                );
+            }
+        }
+        else
         {
-            self::returnError(
-                '(OSWP_DB) Böyle bir isimde tablo bulunamadı! Eğer ki amacınız tablo kontrolü değil ise dikkate almayın!' 
+            return $this->_return(
+                false , '' , 'Parameter Not String'
             );
         }
     }
 
+    /**
+     * Get Existing DataBase Tables
+     * @return object 
+     */
     public function getTableAll()
     {
         $q = $this->connect->prepare('SHOW TABLES');
@@ -134,6 +156,11 @@ class OSWP_DB{
         
     }
 
+    /**
+     * Enter Table Name Control After Get Table Name
+     * @param string $table     Will Check Table Name
+     * @return object 
+     */
     public function getTableName(string $table)
     {
         if( $this->tableControl( $table )->success === true )
@@ -144,6 +171,134 @@ class OSWP_DB{
         {
             self::returnError( '(OSWP_DB) Tablo İsmi Yok!' ); 
         }
+    }
+
+
+    /**
+     * Column Name Control
+     * @param string $table     Get Table Name
+     * @param string $column    Get Check Column Name
+     * @return object
+     */
+    public function columnControl(string $table, string $column)
+    {
+        if( $this->tableControl( $table )->success === false )
+        {
+            $this->_die( 'Table Not Found!' );
+        }
+
+        if( 
+            is_string( $column ) and
+            is_string( $table )  and 
+            !empty( $table )     and
+            !empty( $column ) 
+        ){
+            $process = $this->connect->prepare('DESCRIBE '.$table.'');
+            $process->execute();
+            $result = $process->fetchAll();
+
+            $columnsArr = array();
+            
+            foreach( $result as $r )
+            {
+                array_push( $columnsArr , $r['Field'] );
+            }
+
+            if( in_array( $column , $columnsArr ) )
+            {
+                return $this->_return( true , $column , 'True - '.__FUNCTION__.'()' );
+            }
+            else
+            {
+                self::returnError( ' \' '.$column.' \' Column Not Found In \' '.$table.' \' Table' );
+            }            
+        }
+        else
+        {
+            self::returnError( 'Value Not String Or Empty!' );
+        }
+    }
+
+    /**
+     * Table Or Tables Get Row Numbers
+     * 
+     * @param string $table  Enter Table Name
+     * @param string $vote   Enter single , all
+     * 
+     * single -> Only Enter Table Name  
+     * all    -> MYSQL Get All Table Row        
+     */
+    public function getTotalRow( $table , $vote = 'single')
+    {
+
+        /**
+         * Hold Total Table Name And Row Number
+         */
+        $getAllTableRow  = array();
+
+        if(  is_string( $table ) )
+        {
+            if( $this->tableControl( $table )->success === true )
+            {
+                if( mb_strtolower( $vote ) == 'single' )
+                {
+                    $process = $this->connect->prepare(
+                        'SELECT COUNT(*) FROM '.$table.''
+                    );
+                    $process->execute();
+                    $result = $process->fetchColumn();
+
+                    if( isset( $result ) )
+                    {
+                        return $this->_return( true , $result , 'True - '.__FUNCTION__.'' );
+                    }
+                    else
+                    {
+                        $this->_die( 'FetchColumn Isset Error' );
+                    }
+                }
+                else if( mb_strtolower( $vote ) == 'all' )
+                {
+                    $process = $this->connect->prepare(
+                        'SELECT 
+                            table_name, 
+                            table_rows
+                        FROM 
+                            information_schema.tables'
+                    );
+                    $process->execute();
+                    $result = $process->fetchAll();
+
+                    if( isset( $result ) )
+                    {
+                        foreach( $result as $r )
+                        {
+                            array_push(
+                                $getAllTableRow, 
+                                array(
+                                    $r['table_name'] => $r['table_rows']
+                                )
+                            );
+                        }
+
+                        return $this->_return( true, $getAllTableRow, 'True - '.__FUNCTION__.'' );
+                    }
+                    else
+                    {
+                        $this->_die( 'FetchColumn Isset Error' );
+                    }
+                }
+                else
+                {
+                    $this->_die( 'Only use \'single\' and \'all\'' );
+                }
+            }
+            else
+            {
+                $this->_die( 'Table Not Found!' );
+            }
+        }
+
     }
 
 }

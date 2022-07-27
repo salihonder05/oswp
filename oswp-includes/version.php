@@ -1,10 +1,21 @@
 <?php
 
 /**
+ * Identity
+ * @author  0x4nt
+ * @version $oswp_version
+ * @since   25.07.2022
+ * 
+ * Update Date
+ * @date - 27.07.2022
+ * @hour - 06:23 
+ */
+
+/**
  * Hold OSWP Version 
  * @global string $oswp_version 
  */
-$oswp_version = "1.0-beta-5";
+$oswp_version = "1.0-beta-6";
 
 /**
  * Hold PHP Version
