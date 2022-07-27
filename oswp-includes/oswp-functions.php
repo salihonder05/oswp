@@ -66,7 +66,7 @@ trait OSWP_Functions{
      */
     public function _die(string $text)
     {
-        if( empty( $text ) and is_string( $text )) {
+        if( empty( $text ) and !is_string( $text )) {
             return $this->_return( false , '' , 'Empty Value Or Not String' );
         }
         else{
