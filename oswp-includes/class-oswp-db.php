@@ -2,6 +2,8 @@
 
 namespace Class_DB;
 
+require 'version.php';
+
 define('HOST' , 'localhost');
 define('DB_NAME', 'oswp');
 define('DB_USER' , 'root');
@@ -20,9 +22,18 @@ class OSWP_DB{
 
     public function __construct()
     {
+        global $oswp_php_version;
+
+        if( $this->controlPHPVersion()->success === false )
+        {
+            self::returnError( 'MIN PHP VERSION BE '.$oswp_php_version.'' );
+            return $this->_die( 'MIN PHP VERSION BE '.$oswp_php_version.'' );
+        }
+
         if( $this->constantControl()->success === false )
         {
-            $this->_die( 'OSWP_DB Constant Not Defined !' );
+            self::returnError( 'OSWP_DB Constant Not Defined !' );
+            return $this->_die( 'OSWP_DB Constant Not Defined !' );
         }
 
         $this->connection();
@@ -48,6 +59,7 @@ class OSWP_DB{
         else
         {
             self::returnError( 'OSWP_DB Constant Not Defined(s)' ); 
+            return $this->_die( 'OSWP_DB Constant Not Defined(s)' );
         }
     } 
 
@@ -71,6 +83,30 @@ class OSWP_DB{
             echo $e->getMessage();
             self::returnError( $e->getMessage() ); 
         }
+    }
+
+    /**
+     * Client PHP Version Control
+     * @return object
+     */
+    public function controlPHPVersion()
+    {
+        global $oswp_php_version;
+
+        $client_format = number_format( (double) PHP_VERSION , 1 );
+        $oswp_format = number_format( (double) $oswp_php_version , 1);
+        
+        if( $client_format < $oswp_format)
+        {
+            self::returnError( 'MIN PHP VERSION BE '.$oswp_format.'' );
+            return $this->_die( 'MIN PHP VERSION BE '.$oswp_format.'' );
+        }
+
+        if( $client_format >= $oswp_format )
+        {
+            return $this->_return( true , (double) $client_format , 'True Version - '.__FUNCTION__.'' );
+        }
+        
     }
 
     /**

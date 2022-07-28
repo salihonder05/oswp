@@ -27,12 +27,12 @@ trait OSWP_Functions{
     {
         if( !is_bool( $success ) )
         {
-            self::returnError( 'First Parameter Only Boolean' );
+            return $this->_return__die( false , $value , 'First Parameter Only Boolean - '.__FUNCTION__.'()' );
         }
         
         if( strlen($message) >= 50 )
         {
-            self::returnError( 'Message Max 50' );
+            return $this->_return__die( false , $value , 'Message Max 50 - '.__FUNCTION__.'()' );
         }
 
         return (object) array(
@@ -40,6 +40,17 @@ trait OSWP_Functions{
             'value'     => $value ? $value : $value,
             'message'   => (string) $message ? $message : '-',
         );
+    }
+
+    public function _return__die($success , $value , $message)
+    {
+        /**
+         * There is Error
+         */
+        if( $this->_return( $success , $value , $message )->success === false )
+        {
+            return $this->_die( '_return() Error. Check Parameter And Values' );
+        }        
     }
 
     /**
@@ -70,6 +81,7 @@ trait OSWP_Functions{
             return $this->_return( false , '' , 'Empty Value Or Not String' );
         }
         else{
+            self::returnError( $text );
             return $this->_return( true , die( $text ) , 'True - '.__FUNCTION__.'' );
         }
     }
