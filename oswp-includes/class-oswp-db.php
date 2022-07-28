@@ -26,13 +26,13 @@ class OSWP_DB{
 
         if( $this->controlPHPVersion()->success === false )
         {
-            self::returnError( 'MIN PHP VERSION BE '.$oswp_php_version.'' );
+            $this->returnError( 'MIN PHP VERSION BE '.$oswp_php_version.'' );
             return $this->_die( 'MIN PHP VERSION BE '.$oswp_php_version.'' );
         }
 
         if( $this->constantControl()->success === false )
         {
-            self::returnError( 'OSWP_DB Constant Not Defined !' );
+            $this->returnError( 'OSWP_DB Constant Not Defined !' );
             return $this->_die( 'OSWP_DB Constant Not Defined !' );
         }
 
@@ -58,7 +58,7 @@ class OSWP_DB{
         }
         else
         {
-            self::returnError( 'OSWP_DB Constant Not Defined(s)' ); 
+            $this->returnError( 'OSWP_DB Constant Not Defined(s)' ); 
             return $this->_die( 'OSWP_DB Constant Not Defined(s)' );
         }
     } 
@@ -81,7 +81,7 @@ class OSWP_DB{
         }
         catch (\PDOException $e){
             echo $e->getMessage();
-            self::returnError( $e->getMessage() ); 
+            $this->returnError( $e->getMessage() ); 
         }
     }
 
@@ -98,7 +98,7 @@ class OSWP_DB{
         
         if( $client_format < $oswp_format)
         {
-            self::returnError( 'MIN PHP VERSION BE '.$oswp_format.'' );
+            $this->returnError( 'MIN PHP VERSION BE '.$oswp_format.'' );
             return $this->_die( 'MIN PHP VERSION BE '.$oswp_format.'' );
         }
 
@@ -140,7 +140,7 @@ class OSWP_DB{
 
             if($temp === $temp)
             {
-                self::returnError(
+                $this->returnError(
                     ' \' '.$table.' \' Table Not Found' 
                 );
 
@@ -171,7 +171,7 @@ class OSWP_DB{
 
         if(empty( $t ) or $t <= 0) 
         {
-            self::returnError( '(OSWP_DB) Veritabanı içerisinde tablo bulunamıyor! ' ); 
+            $this->returnError( '(OSWP_DB) Veritabanı içerisinde tablo bulunamıyor! ' ); 
         }
         else 
         {
@@ -205,7 +205,7 @@ class OSWP_DB{
         }
         else
         {
-            self::returnError( '(OSWP_DB) Tablo İsmi Yok!' ); 
+            $this->returnError( '(OSWP_DB) Tablo İsmi Yok!' ); 
         }
     }
 
@@ -246,12 +246,12 @@ class OSWP_DB{
             }
             else
             {
-                self::returnError( ' \' '.$column.' \' Column Not Found In \' '.$table.' \' Table' );
+                $this->returnError( ' \' '.$column.' \' Column Not Found In \' '.$table.' \' Table' );
             }            
         }
         else
         {
-            self::returnError( 'Value Not String Or Empty!' );
+            $this->returnError( 'Value Not String Or Empty!' );
         }
     }
 

@@ -16,6 +16,11 @@ trait OSWP_Functions{
     {
     }
 
+    public function globalFunc()
+    {
+        return $this;
+    }
+
     /**
      * Global Function - return
      * @param bool   $success  Check Proccess || Misson Control (!)
@@ -49,12 +54,13 @@ trait OSWP_Functions{
          */
         if( $this->_return( $success , $value , $message )->success === false )
         {
-            return $this->_die( '_return() Error. Check Parameter And Values' );
+            return $this->_return( $success , $value , $message );
         }
         
         if( $this->_return( $success , $value , $message )->success === true )
         {
             return $this->_return( $success , $value , $message );
+            
         }
     }
 
@@ -86,7 +92,7 @@ trait OSWP_Functions{
             return $this->_return( false , '' , 'Empty Value Or Not String' );
         }
         else{
-            self::returnError( $text );
+            $this->returnError( $text );
             return $this->_return( true , die( $text ) , 'True - '.__FUNCTION__.'' );
         }
         
@@ -119,7 +125,7 @@ trait OSWP_Functions{
         }
         else
         {
-            self::returnError( 'Only Array And Not Empty' );
+            $this->returnError( 'Only Array And Not Empty' );
         }
     }
 
@@ -132,7 +138,7 @@ trait OSWP_Functions{
 
         if( empty( $controlValue ) )
         {
-            self::returnError( 'Fill The Blank - '.__FUNCTION__.'' );
+            $this->returnError( 'Fill The Blank - '.__FUNCTION__.'' );
         }
         else
         {
@@ -193,7 +199,7 @@ trait OSWP_Functions{
                     break;
 
                 default:
-                    return self::returnError( 'Switch Case Error - '.__FUNCTION__.'' );
+                    return $this->returnError( 'Switch Case Error - '.__FUNCTION__.'' );
             }
         }
     }

@@ -8,7 +8,18 @@ trait OSWP_Error{
     {
     }
 
-    public static function errorHTML(string $message)
+    public function globalError()
+    {
+        /**
+         * Usage function inside function
+         * 
+         * Örn:
+         * $oswpdb->globalError()->returnError();
+         */
+        return $this;
+    }
+
+    public function errorHTML(string $message)
     { 
 
         if( empty( $message ) )
@@ -55,7 +66,7 @@ trait OSWP_Error{
         }
     }
 
-    public static function returnError(string $message)
+    public function returnError(string $message)
     {
         if( empty( $message ) )
         {
@@ -63,9 +74,14 @@ trait OSWP_Error{
         }
         else 
         {
-            self::errorHTML( $message );
+            $this->errorHTML( $message );
             die( "KODLARINIZ ARTIK ÇALIŞMAYACAK !" );
         }
+    }
+
+    public function returnErrorDie( $message )
+    {
+        die( $message );
     }
 
     public static function createError()

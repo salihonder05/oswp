@@ -2,6 +2,6 @@
 
 require 'oswp-includes/loader.php';
 
-var_dump($oswpdb->_return__die( true , 'osman' , 'onat' ));
+$oswpdb->globalFunc()->_return( true , 'Value 1' , 'Message 1' );
 echo 'index';
 ?>
