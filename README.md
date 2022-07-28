@@ -1,7 +1,6 @@
 # Urgent To Do
 
- - _return__die() Tekrardan kontrol edilecek !
- - Oluşabilecek Hataları Tüm Fonksiyonlarda Kullan !
+ - USAGE FLUENT INTERFACE 
 
 # Primary Rule
   - Every File Update Change Version.
