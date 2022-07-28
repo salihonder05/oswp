@@ -1,6 +1,7 @@
 # Urgent To Do
 
  - _return__die() Tekrardan kontrol edilecek !
+ - Oluşabilecek Hataları Tüm Fonksiyonlarda Kullan !
 
 # Primary Rule
   - Every File Update Change Version.
