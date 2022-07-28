@@ -50,7 +50,12 @@ trait OSWP_Functions{
         if( $this->_return( $success , $value , $message )->success === false )
         {
             return $this->_die( '_return() Error. Check Parameter And Values' );
-        }        
+        }
+        
+        if( $this->_return( $success , $value , $message )->success === true )
+        {
+            return $this->_return( $success , $value , $message );
+        }
     }
 
     /**
@@ -84,6 +89,7 @@ trait OSWP_Functions{
             self::returnError( $text );
             return $this->_return( true , die( $text ) , 'True - '.__FUNCTION__.'' );
         }
+        
     }
 
     /**

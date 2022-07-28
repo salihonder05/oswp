@@ -13,7 +13,7 @@ trait OSWP_Error{
 
         if( empty( $message ) )
         {
-            parent::_die( 'Message Field Blank! (Required)' );
+            //parent::_die( 'Message Field Blank! (Required)' );
         }
         else
         { 
@@ -59,11 +59,12 @@ trait OSWP_Error{
     {
         if( empty( $message ) )
         {
-            parent::_die( 'Message Field Blank! (Required)' );
+            //parent::_die( 'Message Field Blank! (Required)' );
         }
         else 
         {
-            return self::errorHTML( $message );
+            self::errorHTML( $message );
+            die( "KODLARINIZ ARTIK ÇALIŞMAYACAK !" );
         }
     }
 
