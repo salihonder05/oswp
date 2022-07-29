@@ -1,14 +1,5 @@
 <?php
 
-/**
- * 
- * HATA ÇÖZÜMÜ 
- * 
- * 1 - Fatal error: Uncaught Error: Object of class Fluent could not be converted to string in
- *  Hatası alırsan oluşturduğun sınıfa __toString() ekle.
- * 
- */
-
 class Fluent 
 {
 
