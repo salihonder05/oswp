@@ -129,6 +129,160 @@ trait OSWP_Functions{
         }
     }
 
+    public function checkCountArray(array $arr)
+    {
+        if( empty( is_array( $arr ) ) )
+        {
+            return $this->_return( false , '' , 'Only Array - '.__FUNCTION__.'' );
+        }
+
+        if( count( $arr ) < 0 )
+        {
+            return $this->_return( false , count( $arr ) , 'Array Count Can\'t Small Be Zero (0)' );
+        }
+
+        return $this->_return( true , count( $arr ) , 'True - '.__FUNCTION__.'' );
+    }
+
+
+    /**
+     * @param string $text          Escape HTML Enter Text
+     * @param string $regularWrite  Select Type
+     *   - left : Put space text end 
+     *   - right: Put space text start
+     *   - none : Not put space
+     */
+    public function _escape_html( $text , $regularWrite = 'none' )
+    {
+        $encoding = array(
+            'UTF-8',
+        );
+
+        $text = strip_tags( $text );
+        $exp_text = explode( " " , $text );
+
+        if( $this->checkCountArray( $exp_text )->success === false )
+        {
+            return $this->_return( false , $exp_text , 'Array Count Can\'t Be Zero (0)' );
+        }
+
+        foreach( $exp_text as $key => $e )
+        {
+            if( count( $exp_text ) < 0 )
+            {
+                return $this->_return( false , $exp_text , 'Array Count Can\'t Be Zero (0)' );
+            }
+
+            if( !empty( $e ) )
+            {
+                continue;
+            }
+            else
+            {
+                unset($exp_text[ $key ]);
+            }
+        }
+
+        $regularArr = array(); // Regular For Array Key Number
+        $resultValue = ""; // return for last text
+
+        foreach( $exp_text as $key => $val )
+        {
+            array_push( $regularArr , $val );
+        }
+
+        if( $regularWrite === 'none' )
+        {
+            foreach( $regularArr as $value )
+            {
+                $resultValue .= $value; 
+            }
+            return $this->_return( true , $resultValue , 'True' );
+        }
+
+        /**
+         * This Here Only Put Space Left
+         */
+        if( $regularWrite === 'left' )
+        {
+            $resultArr = array(); // LAST REGULAR AND REGULAR VALUE ARRAY
+
+            foreach( $regularArr as $key => $value )
+            {
+
+                if( $key === count( $regularArr ) - 1 )
+                {
+                    $resultValue .= $value;
+                    continue;
+                }
+
+                if( isset( $value ) )
+                {
+                    $value .= " ";
+                    $resultValue .= $value;
+                    array_push( $resultArr , $value );
+                }
+                
+            }
+            
+            return $this->_return( true , $resultValue , 'True' );
+        }
+
+        /**
+         * This Here Only Put Space Right
+         */
+        if( $regularWrite === 'right' )
+        {
+            $resultArr = array(); // LAST REGULAR AND REGULAR VALUE ARRAY
+
+            foreach( $regularArr as $key => $value )
+            {
+
+                if( $key === ( count( $regularArr ) - count( $regularArr ) ) )
+                {
+                    $resultValue .= $value;
+                    continue;
+                }
+
+                if( isset( $value ) )
+                {
+                    $value = " ".$value;
+                    $resultValue .= $value;
+                    array_push( $resultArr , $value );
+                }
+                
+            }
+            
+            return $this->_return( true , $resultValue , 'True' );
+        }
+
+    }
+
+    /**
+     * Text Encoding Controller
+     * @param string $text     Check Encoding Text
+     * @param array $encoding  Check Encoding Types ( UTF-8 , ASCII esc. )
+     */
+    public function encodingController( $text , $encoding )
+    {
+        if( empty( is_string( $text ) ) )
+        {
+            return $this->_die( 'Only String Parameter - '.__FUNCTION__.'()' );
+        }
+
+        if( empty( is_array( $encoding ) ) )
+        {
+            return $this->_die( 'Only Array Parameter - '.__FUNCTION__.'()' );
+        }
+
+        $encodingArr = $encoding;
+
+        if( mb_detect_encoding( $text , $encodingArr ) === $encodingArr[ 0 ] )
+        {
+            return $this->_return( true , $text , 'True - '.__FUNCTION__.'()' );
+        }
+    }
+
     /**
      * Check Value Type
      * @param mixed $controlValue   Will Check Value

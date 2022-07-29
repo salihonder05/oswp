@@ -75,7 +75,7 @@ trait OSWP_Error{
         else 
         {
             $this->errorHTML( $message );
-            die( "KODLARINIZ ARTIK ÇALIŞMAYACAK !" );
+            die(  );
         }
     }
 
