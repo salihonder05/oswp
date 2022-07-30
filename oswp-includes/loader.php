@@ -5,26 +5,21 @@
  * require 'class-oswp-error.php'; kodu en aşağıda olursa hata alırsın . Trait not found diye.
  */ 
 
-
 /**
  * Traits
  */
-
 require 'trait-oswp-error.php';
 require 'trait-oswp-links.php';
 require 'oswp-functions.php';
 
-
 /**
  * Classes
  */
-
 require 'class-oswp-db.php';
 
 /**
  * use Classes
  */
-
 use Class_DB\OSWP_DB;
 
 /**

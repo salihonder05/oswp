@@ -20,7 +20,7 @@ trait OSWP_Links
             return $this->_return( false , $extraPath , 'Parameter Not String or Empty' );
         }
 
-        return $this->_return( true , $_SERVER[ 'REQUEST_URI' ] . $extraPath , 'True');
+        return $_SERVER[ 'REQUEST_URI' ] . $extraPath;
     }
 
     /**
@@ -35,7 +35,7 @@ trait OSWP_Links
             return $this->_return( false , $extraPath , 'Parameter Not String or Empty' );
         }
 
-        return $this->_return( true , $_SERVER[ 'DOCUMENT_ROOT' ] . $extraPath , 'True');
+        return $_SERVER[ 'DOCUMENT_ROOT' ] . $extraPath;
     }
 
     /**
@@ -45,7 +45,7 @@ trait OSWP_Links
      */
     public function _getScriptName()
     {
-        return $this->_return( true , $_SERVER[ 'SCRIPT_NAME' ] , 'True');
+        return $_SERVER[ 'SCRIPT_NAME' ];
     }
 
     /**
@@ -60,7 +60,7 @@ trait OSWP_Links
             return $this->_return( false , $extraPath , 'Parameter Not String or Empty' );
         }
 
-        return $this->_return( true , $_SERVER[ 'SERVER_NAME' ] . $extraPath , 'True' );
+        return $_SERVER[ 'SERVER_NAME' ] . $extraPath;
     }
 
     /**
@@ -72,7 +72,7 @@ trait OSWP_Links
     {
         if( is_string( $extraPath ) )
         {
-            return $this->_return( true , $_SERVER['PHP_SELF'] . $extraPath , 'True - '.__FUNCTION__.'()' );
+            return $_SERVER['PHP_SELF'] . $extraPath;
         }
 
         return $this->_return( false , $extraPath , 'Parameter Not String !' );

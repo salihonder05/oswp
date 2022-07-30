@@ -1,8 +1,18 @@
 <?php
-
 require 'oswp-includes/loader.php';
-
-//var_dump($oswpdb->_escape_html( "<h1> osman </h1> <h1>onat </h1> <h1> 1234</h1>" , 'right'));
-var_dump( $oswpdb->_getScriptName() );
-
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+<script defer src="oswp-includes/js/class-oswp-navigator.js"></script>
+    
+</body>
+</html>
