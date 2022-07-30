@@ -1,6 +1,7 @@
 # Urgent To Do
 
  - USAGE FLUENT INTERFACE !!
+ - Functions and arrays process calculate time & microtime
 
 # Primary Rule
   - Every File Update Change Version.
