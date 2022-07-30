@@ -10,7 +10,8 @@
  * Traits
  */
 
-require 'class-oswp-error.php';
+require 'trait-oswp-error.php';
+require 'trait-oswp-links.php';
 require 'oswp-functions.php';
 
 

@@ -3,10 +3,12 @@
 namespace OSWP_Functions;
 
 use Error\OSWP_Error;
+use Link\OSWP_Links;
 
 trait OSWP_Functions{
 
     use OSWP_Error;
+    use OSWP_Links;
 
     public function __construct()
     {
@@ -154,9 +156,6 @@ trait OSWP_Functions{
      */
     public function _escape_html( $text , $regularWrite = 'none' )
     {
-        $encoding = array(
-            'UTF-8',
-        );
 
         $text = strip_tags( $text );
         $exp_text = explode( " " , $text );
@@ -186,6 +185,9 @@ trait OSWP_Functions{
         $regularArr = array(); // Regular For Array Key Number
         $resultValue = ""; // return for last text
 
+        /**
+         * This Here Not Space
+         */
         foreach( $exp_text as $key => $val )
         {
             array_push( $regularArr , $val );
@@ -203,7 +205,7 @@ trait OSWP_Functions{
         /**
          * This Here Only Put Space Left
          */
-        if( $regularWrite === 'left' )
+        if( $regularWrite === 'right' )
         {
             $resultArr = array(); // LAST REGULAR AND REGULAR VALUE ARRAY
 
@@ -231,7 +233,7 @@ trait OSWP_Functions{
         /**
          * This Here Only Put Space Right
          */
-        if( $regularWrite === 'right' )
+        if( $regularWrite === 'left' )
         {
             $resultArr = array(); // LAST REGULAR AND REGULAR VALUE ARRAY
 
@@ -277,7 +279,7 @@ trait OSWP_Functions{
 
         $encodingArr = $encoding;
 
-        if( mb_detect_encoding( $text , $encodingArr ) === $encodingArr[ 0 ] )
+        if( mb_detect_encoding( $text , $encodingArr ) === $encoding )
         {
             return $this->_return( true , $text , 'True - '.__FUNCTION__.'()' );
         }
