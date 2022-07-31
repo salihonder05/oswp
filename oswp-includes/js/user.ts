@@ -1,6 +1,6 @@
-class OSWP_User
+class User // class ismi hatasına aldanma. js dosyayı çalışıyor.
 {
-    constructor()
+    constructor() 
     {
     }
 
@@ -10,42 +10,41 @@ class OSWP_User
      * @function error
      * @returns { object }
      */
-    findUserLocation() 
+    findUserLocation() : void 
     {
-        navigator.geolocation.getCurrentPosition( 
+        navigator.geolocation.getCurrentPosition(
             function callback( position ) {
                 var getCoord = position.coords;
-                console.log({ 
-                    'enlem'  : getCoord.latitude,
-                    'boylam' : getCoord.longitude,
-                    'yükseklik' : getCoord.altitude,
-                    'hız'       : getCoord.speed,
-                    'rota'  : getCoord.heading,
-                    'accuracy' : getCoord.accuracy,
-                    'altitude_accuracy' : getCoord.altitudeAccuracy,
+                console.log({
+                    latitude          : getCoord.latitude,
+                    longitude         : getCoord.longitude,
+                    altitude          : getCoord.altitude,
+                    speed             : getCoord.speed,
+                    heading           : getCoord.heading,
+                    accuracy          : getCoord.accuracy,
+                    altitude_accuracy : getCoord.altitudeAccuracy,
 
                     // use position variable
-                    'zaman' : position.timestamp,
+                    timestamp : position.timestamp,
                 });
 
                 return {
-                    'enlem'  : getCoord.latitude,
-                    'boylam' : getCoord.longitude,
-                    'yükseklik' : getCoord.altitude,
-                    'hız'       : getCoord.speed,
-                    'rota'  : getCoord.heading,
-                    'accuracy' : getCoord.accuracy,
-                    'altitude_accuracy' : getCoord.altitudeAccuracy,
+                    latitude          : getCoord.latitude,
+                    longitude         : getCoord.longitude,
+                    altitude          : getCoord.altitude,
+                    speed             : getCoord.speed,
+                    heading           : getCoord.heading,
+                    accuracy          : getCoord.accuracy,
+                    altitude_accuracy : getCoord.altitudeAccuracy,
 
                     // use position variable
-                    'zaman' : position.timestamp,
+                    timestamp : position.timestamp,
                 }
             }
             ,
-            function error( err ) 
-            {
+            function error( err ) {
                 console.log( `Navigator GeoLocation Not Supported. Error: ${err.message}` );
-                return false;
+                throw new Error( `Navigator GeoLocation Not Supported` );
             }
         );
     }
@@ -59,7 +58,7 @@ class OSWP_User
      * @param {boolean} find 
      * @returns 
      */
-    findUserPage( find = true )
+    findUserPage( find: boolean = true )
     {
         if( typeof find !== 'boolean' )
         {
@@ -71,16 +70,15 @@ class OSWP_User
         {
             var createHiddenInput = document.createElement('input');
             createHiddenInput.type = 'hidden';
-            createHiddenInput.name = 'oswp_'+ this.findUserPage.name +'_find_page';
-            createHiddenInput.value = window.document.location; // get link path
-            createHiddenInput.id = 'oswp_'+ this.findUserPage.name +'_find_page';
-            createHiddenInput.className = 'oswp_'+ this.findUserPage.name +'_find_page';
-            createHiddenInput.readOnly = true;
+            createHiddenInput.name = 'oswp_find_page';
+            createHiddenInput.value = String( window.document.location ); // get link path
+            createHiddenInput.id = 'oswp_find_page';
+            createHiddenInput.className = 'oswp_find_page';
             document.body.appendChild(createHiddenInput);
         }
     }
 
-    windowController( changeTitle )
+    windowController( changeTitle: string )
     {
         if( typeof changeTitle !== "string" )
         {
@@ -94,11 +92,11 @@ class OSWP_User
         });
 
         window.addEventListener( 'focus' , () => {
-             document.title = defaultTitle;
+            document.title = defaultTitle;
         });
     }
 
-    windowClose( message )
+    windowClose( message: string )
     {
         var decision = confirm( message );
         if( decision === true )
@@ -106,11 +104,10 @@ class OSWP_User
             window.close();
         }
     }
+
 }
 
 window.addEventListener( 'load' , () => {
-    var oswp_user = new OSWP_User();
-    //oswp_navigator.findUserLocation();
-    oswp_user.findUserPage(true);
+    let user = new User();
+    user.findUserPage( true );
 });
-
