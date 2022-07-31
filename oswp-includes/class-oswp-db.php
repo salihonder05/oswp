@@ -104,7 +104,7 @@ class OSWP_DB{
 
         if( $client_format >= $oswp_format )
         {
-            return $this->_return( true , (double) $client_format , 'True Version - '.__FUNCTION__.'' );
+            return (double) $client_format;
         }
         
     }
@@ -132,7 +132,7 @@ class OSWP_DB{
                     {   
                         $temp++;
 
-                        return $this->_return( true , $r , 'Table Found!' );
+                        return $r;
 
                     }
                 }
@@ -188,7 +188,7 @@ class OSWP_DB{
             }
         }
         
-        return $this->_return( true , $names , '' );
+        return $names;
         
     }
 
@@ -201,7 +201,7 @@ class OSWP_DB{
     {
         if( $this->tableControl( $table )->success === true )
         {
-            return $this->_return( true , $this->tableControl( $table )->value , '' );
+            return $this->tableControl( $table )->value;
         }
         else
         {
@@ -242,7 +242,7 @@ class OSWP_DB{
 
             if( in_array( $column , $columnsArr ) )
             {
-                return $this->_return( true , $column , 'True - '.__FUNCTION__.'()' );
+                return $column;
             }
             else
             {
@@ -286,7 +286,7 @@ class OSWP_DB{
 
                     if( isset( $result ) )
                     {
-                        return $this->_return( true , $result , 'True - '.__FUNCTION__.'' );
+                        return $result;
                     }
                     else
                     {
@@ -299,7 +299,7 @@ class OSWP_DB{
                         'SELECT 
                             table_name, 
                             table_rows
-                        FROM 
+                         FROM 
                             information_schema.tables'
                     );
                     $process->execute();
@@ -317,7 +317,7 @@ class OSWP_DB{
                             );
                         }
 
-                        return $this->_return( true, $getAllTableRow, 'True - '.__FUNCTION__.'' );
+                        return $getAllTableRow;
                     }
                     else
                     {

@@ -12,7 +12,7 @@ require 'oswp-includes/loader.php';
 </head>
 <body>
 
-<script defer src="oswp-includes/js/class-oswp-navigator.js"></script>
+<script defer src="oswp-includes/js/user.js"></script>
     
 </body>
 </html>

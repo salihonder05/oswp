@@ -123,7 +123,7 @@ trait OSWP_Functions{
                 echo $a;
             }
             
-            return $this->_return( true , $array , 'True echoArray()');
+            return $array;
         }
         else
         {
@@ -143,7 +143,7 @@ trait OSWP_Functions{
             return $this->_return( false , count( $arr ) , 'Array Count Can\'t Small Be Zero (0)' );
         }
 
-        return $this->_return( true , count( $arr ) , 'True - '.__FUNCTION__.'' );
+        return count( $arr );
     }
 
 
@@ -185,21 +185,21 @@ trait OSWP_Functions{
         $regularArr = array(); // Regular For Array Key Number
         $resultValue = ""; // return for last text
 
-        /**
-         * This Here Not Space
-         */
         foreach( $exp_text as $key => $val )
         {
             array_push( $regularArr , $val );
         }
 
+        /**
+         * This Here Not Space
+         */
         if( $regularWrite === 'none' )
         {
             foreach( $regularArr as $value )
             {
                 $resultValue .= $value; 
             }
-            return $this->_return( true , $resultValue , 'True' );
+            return $resultValue;
         }
 
         /**
@@ -227,7 +227,7 @@ trait OSWP_Functions{
                 
             }
             
-            return $this->_return( true , $resultValue , 'True' );
+            return $resultValue;
         }
 
         /**
@@ -255,7 +255,7 @@ trait OSWP_Functions{
                 
             }
             
-            return $this->_return( true , $resultValue , 'True' );
+            return $resultValue;
         }
 
     }
@@ -281,7 +281,7 @@ trait OSWP_Functions{
 
         if( mb_detect_encoding( $text , $encodingArr ) === $encoding )
         {
-            return $this->_return( true , $text , 'True - '.__FUNCTION__.'()' );
+            return $text;
         }
     }
 
@@ -301,57 +301,39 @@ trait OSWP_Functions{
             switch( $controlValue )
             {
                 case is_integer( $controlValue ) or is_int( $controlValue ):
-                    return $this->_return(
-                        true , (int) $controlValue , 'Value Is Integer - Int'
-                    );
+                    return (int) $controlValue;
                     break;
 
                 case is_string( $controlValue ):
-                    return $this->_return(
-                        true , (string) $controlValue , 'Value Is String'
-                    );
+                    return (string) $controlValue;
                     break;
 
                 case is_bool( $controlValue ):
-                    return $this->_return(
-                        true , (bool) $controlValue , 'Value Is Bool - Boolean'
-                    );
+                    return (bool) $controlValue;
                     break;
 
                 case is_float( $controlValue ):
-                    return $this->_return(
-                        true , (float) $controlValue , 'Value Is Float'
-                    );
+                    return (float) $controlValue;
                     break;
 
                 case is_array( $controlValue ):
-                    return $this->_return(
-                        true , (array) $controlValue , 'Value Is Array'
-                    );
+                    return (array) $controlValue;
                     break;
                 
                 case is_object( $controlValue ):
-                    return $this->_return(
-                        true , (object) $controlValue , 'Value Is Object'
-                    );
+                    return (object) $controlValue;
                     break;
 
                 case is_double( $controlValue ):
-                    return $this->_return(
-                        true , (double) $controlValue , 'Value Is Double'
-                    );
+                    return (double) $controlValue;
                     break;
 
                 case is_nan( $controlValue ):
-                    return $this->_return(
-                        true , $controlValue , 'Value Is NaN'
-                    );
+                    return $controlValue;
                     break;
                 
                 case is_numeric( $controlValue ):
-                    return $this->_return(
-                        true , $controlValue , 'Value Is Numeric'
-                    );
+                    return $controlValue;
                     break;
 
                 default:
