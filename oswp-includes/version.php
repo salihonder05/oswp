@@ -7,15 +7,15 @@
  * @since   25.07.2022
  * 
  * Update Date
- * @date - 31.07.2022
- * @hour - 22:17
+ * @date - 03.08.2022
+ * @hour - 05:14
  */
 
 /**
  * Hold OSWP Version 
  * @global string $oswp_version 
  */
-$oswp_version = "1.0-beta-13";
+$oswp_version = "1.0-beta-14";
 
 /**
  * Hold PHP Version
