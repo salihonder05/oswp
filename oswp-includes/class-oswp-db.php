@@ -24,7 +24,7 @@ class OSWP_DB{
     {
         global $oswp_php_version;
 
-        if( $this->controlPHPVersion()->success === false )
+        if( !$this->controlPHPVersion() )
         {
             $this->returnError( 'MIN PHP VERSION BE '.$oswp_php_version.'' );
             return $this->_die( 'MIN PHP VERSION BE '.$oswp_php_version.'' );
