@@ -341,7 +341,7 @@ trait OSWP_Functions{
     /**
      * Execute Code But With Delay
      */
-    public function setInterval( $function , int $delay )
+    public function withExecDelay( $function , int $delay )
     {
         $this->is_function( $function );
 
@@ -368,9 +368,43 @@ trait OSWP_Functions{
                 $this->_die( 'While Loop Forever' );
             }
 
+            if( $delay > $delay )
+            {
+                $this->_die( 'While Loop Forever' );
+            }
+
             $function;
             sleep(1);
             $temp++;
+        }
+    }
+
+    /**
+     * Every Second Execute Function
+     */
+    public function setInterval( $function , int $second )
+    {
+        $this->is_function( $function );
+
+        if( !is_int( $second ) or !is_numeric( $second ) )
+        {
+            $this->_die( 'Delay Not Int || Numeric' );
+        }
+
+        if( $second <= 0 )
+        {
+            $this->_die( 'Delay Can\'t Be Small Zero (0)' );
+        }
+
+        if( $second >= 1000 )
+        {
+            $this->_die( 'Enter Small Number! 1 , 2 , 3 etc..' );
+        }
+        
+        while( true )
+        {
+            $function;
+            sleep($second);
         }
     }
 
