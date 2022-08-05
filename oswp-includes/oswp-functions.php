@@ -10,6 +10,13 @@ trait OSWP_Functions{
     use OSWP_Error;
     use OSWP_Links;
 
+    /**
+     * Public Timer Variable
+     */
+    public $timer_start;
+    public $timer_end;
+    public $timer_total;
+
     public function __construct()
     {
     }
@@ -95,7 +102,7 @@ trait OSWP_Functions{
         }
         else{
             $this->returnError( $text );
-            return $this->_return( true , die( $text ) , 'True - '.__FUNCTION__.'' );
+            die( $text );
         }
         
     }
@@ -340,6 +347,38 @@ trait OSWP_Functions{
                     return $this->returnError( 'Switch Case Error - '.__FUNCTION__.'' );
             }
         }
+    }
+
+    /**
+     * Micro Time Starter
+     */
+    public function timerStart()
+    {
+        global $timer_start;
+        $timer_start = microtime(true);
+        return true;
+    }
+
+    /**
+     * Micro Timer End
+     * @param bool $view    Time View
+     */
+    public function timerEnd( $view = false )
+    {
+        if( !is_bool( $view ) )
+        {
+            $this->_die( 'Parameter Only Boolean!' );
+        }
+
+        global $timer_start , $timer_end , $timer_total;
+        $timer_end = microtime(true);
+        $timer_total = number_format( (double) ( $timer_end - $timer_start ) , 2 );
+
+        if( $view === true )
+        {
+            echo $timer_total;
+        }
+        return $timer_total;
     }
 
 }

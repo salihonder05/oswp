@@ -1,3 +1,6 @@
+"use strict";
+exports.__esModule = true;
+exports.User = void 0;
 var User // class ismi hatasına aldanma. js dosyayı çalışıyor.
  = /** @class */ (function () {
     function User() {
@@ -82,8 +85,26 @@ var User // class ismi hatasına aldanma. js dosyayı çalışıyor.
             window.close();
         }
     };
+    /**
+     * if userAgent Empty close window
+     * @param auto automatic start?
+     */
+    User.prototype.checkUserAgent = function (auto) {
+        if (auto === void 0) { auto = true; }
+        if (typeof auto !== "boolean") {
+            throw new TypeError('Just Boolean');
+        }
+        if (auto !== true) {
+            return false;
+        }
+        if (navigator.userAgent == ' ' ||
+            navigator.userAgent == '') {
+            window.close();
+        }
+    };
     return User;
 }());
+exports.User = User;
 window.addEventListener('load', function () {
     var user = new User();
     user.findUserPage(true);

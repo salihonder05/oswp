@@ -27,13 +27,13 @@ class OSWP_DB{
         if( !$this->controlPHPVersion() )
         {
             $this->returnError( 'MIN PHP VERSION BE '.$oswp_php_version.'' );
-            return $this->_die( 'MIN PHP VERSION BE '.$oswp_php_version.'' );
+            $this->_die( 'MIN PHP VERSION BE '.$oswp_php_version.'' );
         }
 
         if( $this->constantControl()->success === false )
         {
             $this->returnError( 'OSWP_DB Constant Not Defined !' );
-            return $this->_die( 'OSWP_DB Constant Not Defined !' );
+            $this->_die( 'OSWP_DB Constant Not Defined !' );
         }
 
         $this->connection();
@@ -59,7 +59,7 @@ class OSWP_DB{
         else
         {
             $this->returnError( 'OSWP_DB Constant Not Defined(s)' ); 
-            return $this->_die( 'OSWP_DB Constant Not Defined(s)' );
+            $this->_die( 'OSWP_DB Constant Not Defined(s)' );
         }
     } 
 
@@ -99,7 +99,7 @@ class OSWP_DB{
         if( $client_format < $oswp_format)
         {
             $this->returnError( 'MIN PHP VERSION BE '.$oswp_format.'' );
-            return $this->_die( 'MIN PHP VERSION BE '.$oswp_format.'' );
+            $this->_die( 'MIN PHP VERSION BE '.$oswp_format.'' );
         }
 
         if( $client_format >= $oswp_format )

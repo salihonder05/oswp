@@ -1,4 +1,4 @@
-class User // class ismi hatasına aldanma. js dosyayı çalışıyor.
+export class User // class ismi hatasına aldanma. js dosyayı çalışıyor.
 {
     constructor() 
     {
@@ -101,6 +101,30 @@ class User // class ismi hatasına aldanma. js dosyayı çalışıyor.
         var decision = confirm( message );
         if( decision === true )
         {
+            window.close();
+        }
+    }
+
+    /**
+     * if userAgent Empty close window
+     * @param auto automatic start?
+     */
+    checkUserAgent( auto: boolean = true )
+    {
+        if( typeof auto !== "boolean" )
+        {
+            throw new TypeError( 'Just Boolean' );
+        }
+
+        if( auto !== true )
+        {
+            return false;
+        }
+
+        if( 
+            navigator.userAgent == ' ' ||
+            navigator.userAgent == '' 
+        ){
             window.close();
         }
     }
