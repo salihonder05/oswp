@@ -1,7 +1,27 @@
-export class User // class ismi hatasına aldanma. js dosyayı çalışıyor.
+class User // class ismi hatasına aldanma. js dosyayı çalışıyor.
 {
     constructor() 
     {
+    }
+
+    /**
+     * Console Screen Message
+     */
+    consoleScreenMessage( message: string , css: string)
+    {
+        if( typeof message !== "string" )
+        {
+            throw new TypeError( 'Message Parameter Not String' );
+        }
+
+        if( typeof css !== "string" )
+        {
+            throw new TypeError( 'CSS Parameter Not String' );
+        }
+
+        console.log(
+            '%c'+ String( message ) , String( css )
+        );
     }
 
     /**
@@ -132,6 +152,16 @@ export class User // class ismi hatasına aldanma. js dosyayı çalışıyor.
 }
 
 window.addEventListener( 'load' , () => {
+
     let user = new User();
+
+    /**
+     * Console Screen Message
+     */
+    user.consoleScreenMessage(
+        'No Script!',
+        'color: red; background-color: darkred; font-size: 30px; padding: 10px;'
+    );
+
     user.findUserPage( true );
 });

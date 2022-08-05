@@ -293,69 +293,11 @@ trait OSWP_Functions{
     }
 
     /**
-     * Check Value Type
-     * @param mixed $controlValue   Will Check Value
-     */
-    public function typeControl( $controlValue )
-    {
-
-        if( empty( $controlValue ) )
-        {
-            $this->returnError( 'Fill The Blank - '.__FUNCTION__.'' );
-        }
-        else
-        {
-            switch( $controlValue )
-            {
-                case is_integer( $controlValue ) or is_int( $controlValue ):
-                    return (int) $controlValue;
-                    break;
-
-                case is_string( $controlValue ):
-                    return (string) $controlValue;
-                    break;
-
-                case is_bool( $controlValue ):
-                    return (bool) $controlValue;
-                    break;
-
-                case is_float( $controlValue ):
-                    return (float) $controlValue;
-                    break;
-
-                case is_array( $controlValue ):
-                    return (array) $controlValue;
-                    break;
-                
-                case is_object( $controlValue ):
-                    return (object) $controlValue;
-                    break;
-
-                case is_double( $controlValue ):
-                    return (double) $controlValue;
-                    break;
-
-                case is_nan( $controlValue ):
-                    return $controlValue;
-                    break;
-                
-                case is_numeric( $controlValue ):
-                    return $controlValue;
-                    break;
-
-                default:
-                    return $this->returnError( 'Switch Case Error - '.__FUNCTION__.'' );
-            }
-        }
-    }
-
-    /**
      * Micro Time Starter
      */
     public function timerStart()
     {
-        global $timer_start;
-        $timer_start = microtime(true);
+        $this->timer_start = microtime(true);
         return true;
     }
 
@@ -370,15 +312,66 @@ trait OSWP_Functions{
             $this->_die( 'Parameter Only Boolean!' );
         }
 
-        global $timer_start , $timer_end , $timer_total;
-        $timer_end = microtime(true);
-        $timer_total = number_format( (double) ( $timer_end - $timer_start ) , 2 );
+        $this->timer_end = microtime(true);
+        $this->timer_total = number_format( (double) ( $this->timer_end - $this->timer_start ) , 2 );
 
         if( $view === true )
         {
-            echo $timer_total;
+            echo $this->timer_total;
         }
-        return $timer_total;
+        return $this->timer_total;
+    }
+
+    /**
+     * Check Function
+     */
+    public function is_function( $function )
+    {
+        if( !is_callable( $function ) )
+        {
+            $this->_die( ' \' '.$function.' \' ' . ' Value Is Not Function' );
+        }
+
+        if( is_callable( $function ) )
+        {
+            return true;
+        }
+    }
+
+    /**
+     * Execute Code But With Delay
+     */
+    public function setInterval( $function , int $delay )
+    {
+        $this->is_function( $function );
+
+        if( !is_int( $delay ) or !is_numeric( $delay ) )
+        {
+            $this->_die( 'Delay Not Int || Numeric' );
+        }
+
+        if( $delay <= 0 )
+        {
+            $this->_die( 'Delay Can\'t Be Small Zero (0)' );
+        }
+
+        if( $delay >= 1000 )
+        {
+            $this->_die( 'Enter Small Number! 1 , 2 , 3 etc..' );
+        }
+        
+        $temp = 1;
+        while( $temp <= $delay )
+        {
+            if( $temp > $delay )
+            {
+                $this->_die( 'While Loop Forever' );
+            }
+
+            $function;
+            sleep(1);
+            $temp++;
+        }
     }
 
 }

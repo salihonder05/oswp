@@ -1,10 +1,19 @@
-"use strict";
-exports.__esModule = true;
-exports.User = void 0;
 var User // class ismi hatasına aldanma. js dosyayı çalışıyor.
  = /** @class */ (function () {
     function User() {
     }
+    /**
+     * Console Screen Message
+     */
+    User.prototype.consoleScreenMessage = function (message, css) {
+        if (typeof message !== "string") {
+            throw new TypeError('Message Parameter Not String');
+        }
+        if (typeof css !== "string") {
+            throw new TypeError('CSS Parameter Not String');
+        }
+        console.log('%c' + String(message), String(css));
+    };
     /**
      * With Usage JS User Find Location And Usage navigator.geolocation.getCurrentPosition() Function
      * @function callback
@@ -104,8 +113,11 @@ var User // class ismi hatasına aldanma. js dosyayı çalışıyor.
     };
     return User;
 }());
-exports.User = User;
 window.addEventListener('load', function () {
     var user = new User();
+    /**
+     * Console Screen Message
+     */
+    user.consoleScreenMessage('No Script!', 'color: red; background-color: darkred; font-size: 30px; padding: 10px;');
     user.findUserPage(true);
 });

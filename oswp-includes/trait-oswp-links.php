@@ -28,7 +28,7 @@ trait OSWP_Links
      * @param string $extraPath   Extra Link Way ( /way1/way2  esc.)
      * @return object
      */
-    public function _getRootURL( string $extraPath )
+    public function getRootURL( string $extraPath )
     {
         if( empty( is_string( $extraPath ) ) )
         {
@@ -43,7 +43,7 @@ trait OSWP_Links
      * @param string $extraPath   Extra Link Way ( /way1/way2  esc.)
      * @return object
      */
-    public function _getScriptName()
+    public function getScriptName()
     {
         return $_SERVER[ 'SCRIPT_NAME' ];
     }
@@ -53,7 +53,7 @@ trait OSWP_Links
      * @param string $extraPath   Extra Link Way ( /way1/way2  esc.)
      * @return object
      */
-    public function _siteURL( string $extraPath )
+    public function getSiteURL( string $extraPath )
     {
         if( empty( is_string( $extraPath ) ) )
         {
@@ -68,7 +68,7 @@ trait OSWP_Links
      * @param string $extraPath   Extra Link Way ( /way1/way2  esc.)
      * @return object
      */
-    public function _getPHPSelf( string $extraPath )
+    public function getPHPSelf( string $extraPath )
     {
         if( is_string( $extraPath ) )
         {

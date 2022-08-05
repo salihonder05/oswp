@@ -1,5 +1,6 @@
 <?php
 require 'oswp-includes/loader.php';
+//$oswpdb->setInterval();
 ?>
 
 <!DOCTYPE html>
