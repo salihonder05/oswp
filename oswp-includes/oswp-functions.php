@@ -142,12 +142,12 @@ trait OSWP_Functions{
     {
         if( empty( is_array( $arr ) ) )
         {
-            return $this->_return( false , '' , 'Only Array - '.__FUNCTION__.'' );
+            $this->_die( 'Only Array - '.__FUNCTION__.'' );
         }
 
         if( count( $arr ) < 0 )
         {
-            return $this->_return( false , count( $arr ) , 'Array Count Can\'t Small Be Zero (0)' );
+            $this->_die( 'Array Count Can\'t Small Be Zero (0)' );
         }
 
         return count( $arr );
@@ -167,16 +167,11 @@ trait OSWP_Functions{
         $text = strip_tags( $text );
         $exp_text = explode( " " , $text );
 
-        if( $this->checkCountArray( $exp_text )->success === false )
-        {
-            return $this->_return( false , $exp_text , 'Array Count Can\'t Be Zero (0)' );
-        }
-
         foreach( $exp_text as $key => $e )
         {
             if( count( $exp_text ) < 0 )
             {
-                return $this->_return( false , $exp_text , 'Array Count Can\'t Be Zero (0)' );
+                $this->_die( 'Array Small Be Zero (0)' );
             }
 
             if( !empty( $e ) )
@@ -272,24 +267,26 @@ trait OSWP_Functions{
      * @param string $text     Check Encoding Text
      * @param array $encoding  Check Encoding Types ( UTF-8 , ASCII esc. )
      */
-    public function encodingController( $text , $encoding )
+    public function encodingController( $text , array $encoding )
     {
         if( empty( is_string( $text ) ) )
         {
-            return $this->_die( 'Only String Parameter - '.__FUNCTION__.'()' );
+            $this->_die( 'Only String Parameter - '.__FUNCTION__.'()' );
         }
 
         if( empty( is_array( $encoding ) ) )
         {
-            return $this->_die( 'Only Array Parameter - '.__FUNCTION__.'()' );
+            $this->_die( 'Only Array Parameter - '.__FUNCTION__.'()' );
         }
 
-        $encodingArr = $encoding;
-
-        if( mb_detect_encoding( $text , $encodingArr ) === $encoding )
+        /* Katı Kurallar için true. Kesin Eşleşmesi Lazım */
+        if( mb_detect_encoding( $text , (array) $encoding , true) )
         {
-            return $text;
+            return $text; 
         }
+
+        echo 'Belirlediğiniz Encoding Türleri İle String İfade Uyuşmuyor';
+        return false;
     }
 
     /**
@@ -325,7 +322,7 @@ trait OSWP_Functions{
     /**
      * Check Function
      */
-    public function is_function( $function )
+    public function is_function( $function ): bool
     {
         if( !is_callable( $function ) )
         {
@@ -339,6 +336,8 @@ trait OSWP_Functions{
     }
 
     /**
+     * !!! NOT WORKING. BEACUSE NOT SECURITY AND NOT RECOMENDED !!!
+     * 
      * Execute Code But With Delay
      */
     public function withExecDelay( $function , int $delay )
@@ -380,6 +379,8 @@ trait OSWP_Functions{
     }
 
     /**
+     * !!! NOT WORKING. BEACUSE NOT SECURITY AND NOT RECOMENDED !!!
+     * 
      * Every Second Execute Function
      */
     public function setInterval( $function , int $second )
@@ -403,7 +404,7 @@ trait OSWP_Functions{
         
         while( true )
         {
-            $function;
+            $function();
             sleep($second);
         }
     }
