@@ -15,13 +15,13 @@
  * Hold OSWP Version 
  * @global string $oswp_version 
  */
-$oswp_version = "1.0-beta-17";
+$oswp_version = "1.0-beta-18";
 
 /**
  * Hold PHP Version
  * @global string $oswp_php_version
  */
-$oswp_php_version = "7.4.26";
+$oswp_php_version = "8.1.0";
 
 /**
  * Hold MYSQL Version

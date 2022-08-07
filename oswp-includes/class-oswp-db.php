@@ -57,9 +57,9 @@ class OSWP_DB{
                 '',
                 $this->SELECT(),
                 $this->COUNT(),
+                $this->FROM(),
                 $this->INNER_JOIN(),
                 $this->ON(),
-                $this->FROM(),
                 $this->WHERE(),
                 $this->IN(),
                 $this->ORDER_BY(),
@@ -107,7 +107,7 @@ class OSWP_DB{
                 DB_USER,
                 DB_PASSWORD,  
             );
-            $this->connect->exec('set name utf8');
+            //$this->connect->exec('set name utf8');
             $this->connect->setAttribute(
                 PDO::ATTR_ERRMODE,
                 PDO::ERRMODE_EXCEPTION
@@ -144,16 +144,28 @@ class OSWP_DB{
         
     }
 
-    public function SELECT( $path = "")
+    public function SELECT( string|array $path = "" )
     {
-        if( empty( is_string( $path ) ) )
+        if( empty( $path ) )
         {
-            $this->_die( 'QUERY PATH NOT STRING' );
+            $this->_die( 'QUERY PATH EMPTY' );
         }
 
-        $this->return = "SELECT " . $path . ' ';
-        echo $this->return;
-        return $this;
+        if( is_string( $path ) )
+        {
+            $this->return = "SELECT " . (string) $path . ' ';
+            echo $this->return;
+            return $this;
+        }
+
+        if( is_array( $path ) && count( $path ) >= 0 )
+        {
+            $this->return = "SELECT " . implode( ',' , $path ) . ' ';
+            echo $this->return;
+            return $this;
+        }
+
+        
     }
 
     public function COUNT( $path = "")
@@ -180,21 +192,24 @@ class OSWP_DB{
         return $this;
     }
 
-    public function WHERE( $path = "" , $values = "")
+    public function WHERE( $path = "" , array $values = [])
     {
+
         if( empty( is_string( $path ) ) )
         {
             $this->_die( 'QUERY PATH NOT STRING' );
         }
 
-        if( empty( $values ) )
-        {
+        if( 
+            !is_array( $values ) || 
+            count( $values ) < 0 
+        ){
             $this->return = " WHERE " . $path . ' ';
             echo $this->return;
             return $this;
         }
 
-        $this->return = " WHERE " . $path . '  ' . $values;
+        $this->return = " WHERE " . $path . ' ' . implode( ',' , $values ) ;
         echo $this->return;
         return $this;
     }
@@ -235,14 +250,14 @@ class OSWP_DB{
         return $this;
     }
 
-    public function VALUES( $path = "")
+    public function VALUES( array $values = [ ] )
     {
-        if( empty( is_string( $path ) ) )
+        if( !is_array( $values ) )
         {
             $this->_die( 'QUERY PATH NOT STRING' );
         }
 
-        $this->return = ' VALUES (' . $path . ')  ';
+        $this->return = ' VALUES (' . implode( ',' , $values ) . ')  ';
         echo $this->return;
         return $this;
     }
