@@ -36,13 +36,11 @@ class OSWP_DB{
 
         if( !$this->controlPHPVersion() )
         {
-            $this->returnError( 'MIN PHP VERSION BE '.$oswp_php_version.'' );
             $this->_die( 'MIN PHP VERSION BE '.$oswp_php_version.'' );
         }
 
         if( $this->constantControl()->success === false )
         {
-            $this->returnError( 'OSWP_DB Constant Not Defined !' );
             $this->_die( 'OSWP_DB Constant Not Defined !' );
         }
 
@@ -144,6 +142,25 @@ class OSWP_DB{
         
     }
 
+    /**
+     * İmplode kullanırken dizinin son elemanına eklenecek olan karakteri eklemez.
+     * Bu yüzden bu fonksiyonu kullan.
+     */
+    public function implodeAddLastValue( string $seperator ,  array $arr )
+    {
+        if( empty( is_string( $seperator ) ) )
+        {
+            $this->_die( 'Seperator Not String' );
+        }
+
+        if( empty( is_array( $arr ) ) )
+        {
+            $this->_die( 'Array Parameter Not Array' );
+        }
+
+        return implode( (string) $seperator , (array) $arr ) . $seperator;
+    }
+
     public function SELECT( string|array $path = "" )
     {
         if( empty( $path ) )
@@ -153,15 +170,15 @@ class OSWP_DB{
 
         if( is_string( $path ) )
         {
-            $this->return = "SELECT " . (string) $path . ' ';
-            echo $this->return;
+            $this->return .= "SELECT " . (string) $path . '';
+            //echo $this->return;
             return $this;
         }
 
         if( is_array( $path ) && count( $path ) >= 0 )
         {
-            $this->return = "SELECT " . implode( ',' , $path ) . ' ';
-            echo $this->return;
+            $this->return .= "SELECT " . implode( ',' , $path ) . '';
+            //echo $this->return;
             return $this;
         }
 
@@ -175,8 +192,8 @@ class OSWP_DB{
             $this->_die( 'QUERY PATH NOT STRING' );
         }
 
-        $this->return = " COUNT(" . $path . ') ';
-        echo $this->return;
+        $this->return .= " COUNT(" . $path . ') ';
+        //echo $this->return;
         return $this;
     }
 
@@ -187,30 +204,23 @@ class OSWP_DB{
             $this->_die( 'QUERY PATH NOT STRING' );
         }
 
-        $this->return = " FROM " . $path . ' ';
-        echo $this->return;
+        $this->return .= " FROM " . $path . '';
+        //echo $this->return;
         return $this;
     }
 
-    public function WHERE( $path = "" , array $values = [])
+    public function WHERE( array $values = [])
     {
-
-        if( empty( is_string( $path ) ) )
-        {
-            $this->_die( 'QUERY PATH NOT STRING' );
-        }
-
         if( 
             !is_array( $values ) || 
             count( $values ) < 0 
-        ){
-            $this->return = " WHERE " . $path . ' ';
-            echo $this->return;
-            return $this;
+        )
+        {
+            $this->_die( 'Parameter Not Array Or Array Inside Values Total Small Be Zero (0)' );
         }
 
-        $this->return = " WHERE " . $path . ' ' . implode( ',' , $values ) ;
-        echo $this->return;
+        $this->return .= " WHERE " . implode( '= ? ,' , $values ) ;
+        ////echo $this->return;
         return $this;
     }
 
@@ -221,8 +231,8 @@ class OSWP_DB{
             $this->_die( 'QUERY PATH NOT STRING' );
         }
 
-        $this->return = " INNER JOIN " . $path . '  ';
-        echo $this->return;
+        $this->return .= " INNER JOIN " . $path . '';
+        //echo $this->return;
         return $this;
     }
 
@@ -233,8 +243,8 @@ class OSWP_DB{
             $this->_die( 'QUERY PATH NOT STRING' );
         }
 
-        $this->return = " ON " . $path . '  ';
-        echo $this->return;
+        $this->return .= " ON " . $path . '';
+        //echo $this->return;
         return $this;
     }
 
@@ -245,8 +255,8 @@ class OSWP_DB{
             $this->_die( 'QUERY PATH NOT STRING' );
         }
 
-        $this->return = "INSERT INTO " . $path . '  ';
-        echo $this->return;
+        $this->return .= "INSERT INTO " . $path . '';
+        //echo $this->return;
         return $this;
     }
 
@@ -254,11 +264,11 @@ class OSWP_DB{
     {
         if( !is_array( $values ) )
         {
-            $this->_die( 'QUERY PATH NOT STRING' );
+            $this->_die( 'QUERY PATH NOT ARRAY' );
         }
 
-        $this->return = ' VALUES (' . implode( ',' , $values ) . ')  ';
-        echo $this->return;
+        $this->return .= ' VALUES (' . implode( ',' , $values ) . ') ';
+        //echo $this->return;
         return $this;
     }
 
@@ -269,22 +279,22 @@ class OSWP_DB{
             $this->_die( 'QUERY PATH NOT STRING' );
         }
 
-        $this->return = ' ORDER BY ' . $path . '  ';
-        echo $this->return;
+        $this->return .= ' ORDER BY ' . $path . '';
+        //echo $this->return;
         return $this;
     }
 
     public function DESC()
     {
-        $this->return = ' DESC ';
-        echo $this->return;
+        $this->return .= ' DESC ';
+        //echo $this->return;
         return $this;
     }
 
     public function ASC()
     {
-        $this->return = ' ASC ';
-        echo $this->return;
+        $this->return .= ' ASC ';
+        //echo $this->return;
         return $this;
     }
 
@@ -295,9 +305,24 @@ class OSWP_DB{
             $this->_die( 'QUERY PATH NOT STRING' );
         }
 
-        $this->return = " IN " . $path . ' ';
-        echo $this->return;
+        $this->return .= " IN " . $path . ' ';
+        //echo $this->return;
         return $this;
+    }
+
+    public function prepareExecute()
+    {
+        if( !$this->connect )
+        {
+            $this->_die( 'Execute Function Not Working. Because Not Connect' );
+        }
+
+        $this->connect->prepare( $this->return );
+
+    }
+
+    public function queryExecute()
+    { 
     }
 
     /**

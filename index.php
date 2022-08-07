@@ -9,7 +9,7 @@ var_dump($oswpdb->encodingController( $str , array( 'ASCII' , 'UTF-8' ) ));*/
 var_dump( 
     $oswpdb->SELECT( array( 'id', 'sdad' ) )
            ->FROM( 'test_db' )
-           ->WHERE( 'sdas',array( 'id' ) ) 
+           ->WHERE( array( 'id' ) ) 
         )
 ?>
 
