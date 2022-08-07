@@ -18,7 +18,17 @@ class OSWP_DB{
 
     use OSWP_Functions;
 
+    /**
+     * DB Connection Variable
+     * @param bool $connect     DB Connection Variable
+     */
     protected $connect;
+
+    /**
+     * Fluent Interface DB Return Variable
+     * @param mixed $return     DB Query Return Variable
+     */
+    public $return;
 
     public function __construct()
     {
@@ -37,6 +47,31 @@ class OSWP_DB{
         }
 
         $this->connection();
+    }
+
+    public function __toString(): string
+    {
+        try
+        {
+            return sprintf(
+                '',
+                $this->SELECT(),
+                $this->COUNT(),
+                $this->INNER_JOIN(),
+                $this->ON(),
+                $this->FROM(),
+                $this->WHERE(),
+                $this->IN(),
+                $this->ORDER_BY(),
+                $this->DESC(),
+                $this->ASC(),
+            );
+        }
+        catch(Exception $e)
+        {
+            echo $e->getMessage();
+            return '';
+        }
     }
 
     /**
@@ -107,6 +142,147 @@ class OSWP_DB{
             return (double) $client_format;
         }
         
+    }
+
+    public function SELECT( $path = "")
+    {
+        if( empty( is_string( $path ) ) )
+        {
+            $this->_die( 'QUERY PATH NOT STRING' );
+        }
+
+        $this->return = "SELECT " . $path . ' ';
+        echo $this->return;
+        return $this;
+    }
+
+    public function COUNT( $path = "")
+    {
+        if( empty( is_string( $path ) ) )
+        {
+            $this->_die( 'QUERY PATH NOT STRING' );
+        }
+
+        $this->return = " COUNT(" . $path . ') ';
+        echo $this->return;
+        return $this;
+    }
+
+    public function FROM( $path = "" )
+    {
+        if( empty( is_string( $path ) ) )
+        {
+            $this->_die( 'QUERY PATH NOT STRING' );
+        }
+
+        $this->return = " FROM " . $path . ' ';
+        echo $this->return;
+        return $this;
+    }
+
+    public function WHERE( $path = "" , $values = "")
+    {
+        if( empty( is_string( $path ) ) )
+        {
+            $this->_die( 'QUERY PATH NOT STRING' );
+        }
+
+        if( empty( $values ) )
+        {
+            $this->return = " WHERE " . $path . ' ';
+            echo $this->return;
+            return $this;
+        }
+
+        $this->return = " WHERE " . $path . '  ' . $values;
+        echo $this->return;
+        return $this;
+    }
+
+    public function INNER_JOIN( $path = "" )
+    {
+        if( empty( is_string( $path ) ) )
+        {
+            $this->_die( 'QUERY PATH NOT STRING' );
+        }
+
+        $this->return = " INNER JOIN " . $path . '  ';
+        echo $this->return;
+        return $this;
+    }
+
+    public function ON( $path = "" )
+    {
+        if( empty( is_string( $path ) ) )
+        {
+            $this->_die( 'QUERY PATH NOT STRING' );
+        }
+
+        $this->return = " ON " . $path . '  ';
+        echo $this->return;
+        return $this;
+    }
+
+    public function INSERT( $path = "" )
+    {
+        if( empty( is_string( $path ) ) )
+        {
+            $this->_die( 'QUERY PATH NOT STRING' );
+        }
+
+        $this->return = "INSERT INTO " . $path . '  ';
+        echo $this->return;
+        return $this;
+    }
+
+    public function VALUES( $path = "")
+    {
+        if( empty( is_string( $path ) ) )
+        {
+            $this->_die( 'QUERY PATH NOT STRING' );
+        }
+
+        $this->return = ' VALUES (' . $path . ')  ';
+        echo $this->return;
+        return $this;
+    }
+
+    public function ORDER_BY( $path = "")
+    {
+        if( empty( is_string( $path ) ) )
+        {
+            $this->_die( 'QUERY PATH NOT STRING' );
+        }
+
+        $this->return = ' ORDER BY ' . $path . '  ';
+        echo $this->return;
+        return $this;
+    }
+
+    public function DESC()
+    {
+        $this->return = ' DESC ';
+        echo $this->return;
+        return $this;
+    }
+
+    public function ASC()
+    {
+        $this->return = ' ASC ';
+        echo $this->return;
+        return $this;
+    }
+
+    public function IN( $path = "" )
+    {
+        if( empty( is_string( $path ) ) )
+        {
+            $this->_die( 'QUERY PATH NOT STRING' );
+        }
+
+        $this->return = " IN " . $path . ' ';
+        echo $this->return;
+        return $this;
     }
 
     /**
@@ -272,71 +448,66 @@ class OSWP_DB{
          */
         $getAllTableRow  = array();
 
-        if(  is_string( $table ) )
+        if( !$this->tableControl( $table ) )
         {
-            if( $this->tableControl( $table )->success === true )
+            $this->_die( 'Table Not Found' );
+        }
+
+        /**
+         * Get Single Table
+         */
+        if( mb_strtolower( $vote ) == 'single' )
+        {
+            $process = $this->connect->prepare(
+                'SELECT COUNT(*) FROM '.$table.''
+            );
+            $process->execute();
+            $result = $process->fetchColumn();
+
+            if( isset( $result ) )
             {
-                if( mb_strtolower( $vote ) == 'single' )
-                {
-                    $process = $this->connect->prepare(
-                        'SELECT COUNT(*) FROM '.$table.''
-                    );
-                    $process->execute();
-                    $result = $process->fetchColumn();
-
-                    if( isset( $result ) )
-                    {
-                        return $result;
-                    }
-                    else
-                    {
-                        $this->_die( 'FetchColumn Isset Error' );
-                    }
-                }
-                else if( mb_strtolower( $vote ) == 'all' )
-                {
-                    $process = $this->connect->prepare(
-                        'SELECT 
-                            table_name, 
-                            table_rows
-                         FROM 
-                            information_schema.tables'
-                    );
-                    $process->execute();
-                    $result = $process->fetchAll();
-
-                    if( isset( $result ) )
-                    {
-                        foreach( $result as $r )
-                        {
-                            array_push(
-                                $getAllTableRow, 
-                                array(
-                                    $r['table_name'] => $r['table_rows']
-                                )
-                            );
-                        }
-
-                        return $getAllTableRow;
-                    }
-                    else
-                    {
-                        $this->_die( 'FetchColumn Isset Error' );
-                    }
-                }
-                else
-                {
-                    $this->_die( 'Only use \'single\' and \'all\'' );
-                }
+                return (int) $result;
             }
             else
             {
-                $this->_die( 'Table Not Found!' );
+                $this->_die( 'FetchColumn Isset Error' );
             }
         }
 
+        /**
+         * Get All Table
+         */
+        if( mb_strtolower( $vote ) == 'all' )
+        {
+            $process = $this->connect->prepare(
+                'SELECT 
+                    table_name, 
+                    table_rows
+                    FROM 
+                    information_schema.tables'
+            );
+            $process->execute();
+            $result = $process->fetchAll();
+
+            if( isset( $result ) )
+            {
+                foreach( $result as $r )
+                {
+                    array_push(
+                        $getAllTableRow, 
+                        array(
+                            $r['table_name'] => (int) $r['table_rows']
+                        )
+                    );
+                }
+
+                return $getAllTableRow;
+            }
+            else
+            {
+                $this->_die( 'FetchColumn Isset Error' );
+            }
+        }
     }
 
 }
-
-?>

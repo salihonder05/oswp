@@ -1,12 +1,12 @@
 <?php
 require 'oswp-includes/loader.php';
-//$oswpdb->encodingController( 'sadsd' , array( "JIS" ,"EUC-JP" ) );
 
+/*$str = "\xE1";
+var_dump($oswpdb->encodingController( $str , array( 'ASCII' , 'UTF-8' ) ));*/
 
-$str = "\xE1";
+//var_dump($oswpdb->getTotalRow( 'test_db' , 'all' ));
 
-
-var_dump($oswpdb->encodingController( $str , array( 'ASCII' , 'UTF-8' ) ));
+var_dump( $oswpdb->SELECT( '*' )->FROM( 'test_db' )->WHERE( 'id' ) )
 ?>
 
 <!DOCTYPE html>
