@@ -312,12 +312,12 @@ class OSWP_DB{
 
     public function prepareExecute()
     {
-        if( !$this->connect )
+        /*if( !$this->connect )
         {
             $this->_die( 'Execute Function Not Working. Because Not Connect' );
         }
 
-        $this->connect->prepare( $this->return );
+        $q = $this->connect->prepare( $this->return );*/
 
     }
 
