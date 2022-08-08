@@ -30,7 +30,7 @@ class User // class ismi hatasına aldanma. js dosyayı çalışıyor.
      * @function error
      * @returns { object }
      */
-    findUserLocation() : void 
+    findUserLocation() 
     {
         navigator.geolocation.getCurrentPosition(
             function callback( position ) {
@@ -94,10 +94,15 @@ class User // class ismi hatasına aldanma. js dosyayı çalışıyor.
             createHiddenInput.value = String( window.document.location ); // get link path
             createHiddenInput.id = 'oswp_find_page';
             createHiddenInput.className = 'oswp_find_page';
-            document.body.appendChild(createHiddenInput);
+            return document.body.appendChild(createHiddenInput);
         }
     }
 
+    /**
+     * Client Different To Go Page Change Default Title
+     * @param {string} changeTitle  Change Title String
+     * @returns 
+     */
     windowController( changeTitle: string )
     {
         if( typeof changeTitle !== "string" )
@@ -116,7 +121,11 @@ class User // class ismi hatasına aldanma. js dosyayı çalışıyor.
         });
     }
 
-    windowClose( message: string )
+    /**
+     * Client Close Window 
+     * @param message Close Message
+     */
+    windowClose( message: string ): void
     {
         var decision = confirm( message );
         if( decision === true )
@@ -127,7 +136,7 @@ class User // class ismi hatasına aldanma. js dosyayı çalışıyor.
 
     /**
      * if userAgent Empty close window
-     * @param auto automatic start?
+     * @param {boolean} auto automatic start?
      */
     checkUserAgent( auto: boolean = true )
     {
@@ -149,10 +158,60 @@ class User // class ismi hatasına aldanma. js dosyayı çalışıyor.
         }
     }
 
+    /**
+     * Have Script Tags Add Defer Attribute
+     * @param {boolean} auto  Add auto All Script Tag Defer Attribute
+     * @returns 
+     */
+    addDefer( auto: boolean = true )
+    {
+        if( typeof auto !== 'boolean' )
+        {
+            throw new TypeError( 'Just Boolean' );
+        }
+        
+        if( auto === false )
+        {
+            return false;
+        }
+
+        let getEl = document.getElementsByTagName('script');
+        for( var i in getEl )
+        {
+            if( !getEl[i].defer )
+            {
+                getEl[i].defer = true;
+            }
+        }
+    }
+
+    /**
+     * With Enter Tag Name Add _blank 
+     * @param {string} el   Enter Tag Name 
+     */
+    addTargetBlank( el: string = 'a')
+    {
+        if( 
+            typeof el != "string" && 
+            el != "" && 
+            el != ' '
+        ){
+            throw new Error( 'Element Not String And Empty' );
+        }
+
+        let getEl = document.getElementsByTagName( el );
+        for( var i in getEl )
+        {
+            if( !getEl[i].target )
+            {
+                getEl[i].target = '_blank';
+            }
+        }
+    }
+
 }
 
 window.addEventListener( 'load' , () => {
-
     let user = new User();
 
     /**
@@ -164,4 +223,6 @@ window.addEventListener( 'load' , () => {
     );
 
     user.findUserPage( true );
+
+    user.addTargetBlank('a');
 });

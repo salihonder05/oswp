@@ -23,7 +23,13 @@ var_dump(
 </head>
 <body>
 
-<script defer src="oswp-includes/js/user.js"></script>
-    
+<script 
+    src="oswp-includes/js/user.js"
+    defer="defer"
+/></script>
+<script></script>
+
+<a href=""></a>
+ 
 </body>
 </html>
