@@ -161,7 +161,8 @@ class OSWP_DB{
         return implode( (string) $seperator , (array) $arr ) . $seperator;
     }
 
-    public function SELECT( string|array $path = "" ) // This line not working on php 7.4 - This php version (PHP 7.4) is stable version. This line and another lines must fix for php 7.4.
+    public function SELECT( $path = "" ) // This line not working on php 7.4 - This php version (PHP 7.4) is stable version. This line and another lines must fix for php 7.4.
+    // This is my solution.
     {
         if( !$this->connection() )
         {
