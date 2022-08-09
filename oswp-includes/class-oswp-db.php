@@ -163,6 +163,11 @@ class OSWP_DB{
 
     public function SELECT( string|array $path = "" )
     {
+        if( !$this->connection() )
+        {
+            $this->_die( 'NOT CONNECTION' );
+        }
+
         if( empty( $path ) )
         {
             $this->_die( 'QUERY PATH EMPTY' );
@@ -187,6 +192,11 @@ class OSWP_DB{
 
     public function COUNT( $path = "")
     {
+        if( !$this->connection() )
+        {
+            $this->_die( 'NOT CONNECTION' );
+        }
+
         if( empty( is_string( $path ) ) )
         {
             $this->_die( 'QUERY PATH NOT STRING' );
@@ -197,20 +207,40 @@ class OSWP_DB{
         return $this;
     }
 
-    public function FROM( $path = "" )
+    public function FROM( string $table = "" , $path = "" )
     {
+        if( !$this->connection() )
+        {
+            $this->_die( 'NOT CONNECTION' );
+        }
+
+        if( empty( is_string( $table ) ) )
+        {
+            $this->_die( 'QUERY TABLE NOT STRING' );
+        }
+
         if( empty( is_string( $path ) ) )
         {
             $this->_die( 'QUERY PATH NOT STRING' );
         }
 
-        $this->return .= " FROM " . $path . '';
+        if( empty( $this->tableControl( $table ) ) )
+        {
+            $this->_die( 'Table Not Found - '.__FUNCTION__ );
+        }
+
+        $this->return .= " FROM " . $table . $path . '';
         //echo $this->return;
         return $this;
     }
 
     public function WHERE( array $values = [])
     {
+        if( !$this->connection() )
+        {
+            $this->_die( 'NOT CONNECTION' );
+        }
+
         if( 
             !is_array( $values ) || 
             count( $values ) < 0 
@@ -226,6 +256,11 @@ class OSWP_DB{
 
     public function INNER_JOIN( $path = "" )
     {
+        if( !$this->connection() )
+        {
+            $this->_die( 'NOT CONNECTION' );
+        }
+
         if( empty( is_string( $path ) ) )
         {
             $this->_die( 'QUERY PATH NOT STRING' );
@@ -238,6 +273,11 @@ class OSWP_DB{
 
     public function ON( $path = "" )
     {
+        if( !$this->connection() )
+        {
+            $this->_die( 'NOT CONNECTION' );
+        }
+
         if( empty( is_string( $path ) ) )
         {
             $this->_die( 'QUERY PATH NOT STRING' );
@@ -250,6 +290,11 @@ class OSWP_DB{
 
     public function INSERT( $path = "" )
     {
+        if( !$this->connection() )
+        {
+            $this->_die( 'NOT CONNECTION' );
+        }
+
         if( empty( is_string( $path ) ) )
         {
             $this->_die( 'QUERY PATH NOT STRING' );
@@ -262,6 +307,11 @@ class OSWP_DB{
 
     public function VALUES( array $values = [ ] )
     {
+        if( !$this->connection() )
+        {
+            $this->_die( 'NOT CONNECTION' );
+        }
+
         if( !is_array( $values ) )
         {
             $this->_die( 'QUERY PATH NOT ARRAY' );
@@ -274,6 +324,11 @@ class OSWP_DB{
 
     public function ORDER_BY( $path = "")
     {
+        if( !$this->connection() )
+        {
+            $this->_die( 'NOT CONNECTION' );
+        }
+
         if( empty( is_string( $path ) ) )
         {
             $this->_die( 'QUERY PATH NOT STRING' );
@@ -286,6 +341,11 @@ class OSWP_DB{
 
     public function DESC()
     {
+        if( !$this->connection() )
+        {
+            $this->_die( 'NOT CONNECTION' );
+        }
+
         $this->return .= ' DESC ';
         //echo $this->return;
         return $this;
@@ -293,6 +353,11 @@ class OSWP_DB{
 
     public function ASC()
     {
+        if( !$this->connection() )
+        {
+            $this->_die( 'NOT CONNECTION' );
+        }
+
         $this->return .= ' ASC ';
         //echo $this->return;
         return $this;
@@ -300,6 +365,11 @@ class OSWP_DB{
 
     public function IN( $path = "" )
     {
+        if( !$this->connection() )
+        {
+            $this->_die( 'NOT CONNECTION' );
+        }
+
         if( empty( is_string( $path ) ) )
         {
             $this->_die( 'QUERY PATH NOT STRING' );
@@ -312,12 +382,12 @@ class OSWP_DB{
 
     public function prepareExecute()
     {
-        /*if( !$this->connect )
+        if( !$this->connect )
         {
             $this->_die( 'Execute Function Not Working. Because Not Connect' );
         }
 
-        $q = $this->connect->prepare( $this->return );*/
+        $q = $this->connect->prepare( $this->return );
 
     }
 
@@ -332,6 +402,11 @@ class OSWP_DB{
      */
     public function tableControl(string $table)
     {
+        if( !$this->connection() )
+        {
+            $this->_die( 'NOT CONNECTION' );
+        }
+
         if( is_string( $table ) )
         {
             $q = $this->connect->prepare('SHOW TABLES');
@@ -365,12 +440,11 @@ class OSWP_DB{
                 );
             }
         }
-        else
-        {
-            return $this->_return(
-                false , '' , 'Parameter Not String'
-            );
-        }
+
+        return $this->_return(
+            false , '' , 'Parameter Not String'
+        );
+
     }
 
     /**
@@ -379,6 +453,11 @@ class OSWP_DB{
      */
     public function getTableAll()
     {
+        if( !$this->connection() )
+        {
+            $this->_die( 'NOT CONNECTION' );
+        }
+        
         $q = $this->connect->prepare('SHOW TABLES');
         $q->execute();
         $t = $q->fetchAll();
@@ -415,6 +494,11 @@ class OSWP_DB{
      */
     public function getTableName(string $table)
     {
+        if( !$this->connection() )
+        {
+            $this->_die( 'NOT CONNECTION' );
+        }
+
         if( $this->tableControl( $table )->success === true )
         {
             return $this->tableControl( $table )->value;
